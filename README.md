@@ -27,9 +27,21 @@ Skipped Tests Finder is a command-line tool that scans your project or test suit
 
 - **skipped-tests-finder** requires **NodeJS 10** (or higher) to be installed
 
+1. Clone this repository:
+
+```sh
+git clone https://github.com/Sharma-IT/skipped-tests-finder.git
+```
+
+2. Change into this respository's directory:
+
+```sh
+cd skipped-tests-finder
+```
+
 ### For Linux
 
-To install `skipped-tests-finder` on Linux-based Operating Systems (including macOS), run:
+3. To install `skipped-tests-finder` on Linux-based Operating Systems (including macOS), run:
 
 ```bash
 ./install.sh
@@ -37,7 +49,7 @@ To install `skipped-tests-finder` on Linux-based Operating Systems (including ma
 
 ### For Windows
 
-To install `skipped-tests-finder` on Windows Operating Systems, run:
+3. To install `skipped-tests-finder` on Windows Operating Systems, run:
 
 ```powershell
 .\install.ps1
