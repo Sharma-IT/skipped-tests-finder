@@ -6,6 +6,7 @@ const console = require('console');
 let testDir = null;
 let outputToFile = false;
 let skipPrompt = false;
+let outputDir = null;
 
 /**
  * Strips ANSI escape codes from a given string.
@@ -46,8 +47,14 @@ args.forEach((arg) => {
     -d=             Path to the directory to search for skipped tests
     -txt            Print the results to a plain text file
     -cli            Print the results to the console
+    -o=<path>       Specify the directory for the output file
+    -c              Create output in the same directory as the script
     -h, --help      Display this help message\n`);
     process.exit(0);
+  } else if (arg.startsWith('-o=')) {
+    outputDir = arg.substring(3);
+  } else if (arg === '-c') {
+    outputDir = __dirname;
   }
 });
 
@@ -131,7 +138,7 @@ const promptForDirectory = () => {
 
     try {
       const answer = await new Promise((resolve) => {
-        rl.question(`Enter the path to your tests directory (hit <escape> to exit): `, resolve);
+        rl.question(`Enter the file path of where your tests are (hit <escape> to exit): `, resolve);
       });
       const dirPath = answer.trim();
       fs.statSync(dirPath);
@@ -157,7 +164,6 @@ const promptForDirectory = () => {
  */
 const promptForOutputOption = () => {
   return new Promise((resolve) => {
-    // Listen for keypress events to handle escape key
     process.stdin.setRawMode(true);
     process.stdin.resume();
     process.stdin.on('keypress', (ch, key) => {
@@ -167,12 +173,13 @@ const promptForOutputOption = () => {
         process.exit(0);
       }
     });
+
     const askForOutputOption = () => {
       rl.question(`Do you want to output the results to a file? (y/n; hit <escape> to exit): `, (answer) => {
         const userResponse = answer.trim().toLowerCase();
         if (userResponse === 'y') {
           outputToFile = true;
-          resolve();
+          askForOutputPath();
         } else if (userResponse === 'n') {
           outputToFile = false;
           resolve();
@@ -183,7 +190,28 @@ const promptForOutputOption = () => {
       });
     };
 
+    const askForOutputPath = () => {
+      rl.question(`Enter the file path of where you want the text file to be created in (leave blank for script directory): `, (path) => {
+        if (path.trim() === '') {
+          outputDir = __dirname;
+        } else {
+          try {
+            fs.accessSync(path.trim(), fs.constants.W_OK);
+            outputDir = path.trim();
+          } catch (err) {
+            console.error(`Error: Unable to write to the specified directory. ${err.message}`);
+            console.log('Using the script directory instead.');
+            outputDir = __dirname;
+          }
+        }
+        resolve();
+      });
+    };
+
     askForOutputOption();
+  }).catch(error => {
+    console.error(`An unexpected error occurred: ${error.message}`);
+    process.exit(1);
   });
 };
 
@@ -216,7 +244,9 @@ const findAndPrintSkippedTests = async () => {
 
     if (outputToFile) {
       output = stripANSI(output);
-      const outputFilePath = path.join(process.cwd(), 'skipped-tests.txt');
+      const outputFilePath = outputDir 
+        ? path.join(outputDir, 'skipped_tests.txt')
+        : path.join(process.cwd(), 'skipped_tests.txt');
       fs.writeFileSync(outputFilePath, output + testOutput);
       console.log(`Skipped tests output written to ${outputFilePath}`);
     } else {
