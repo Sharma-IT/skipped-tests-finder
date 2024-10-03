@@ -81,11 +81,11 @@ Usage: node skipped-tests-finder [options] -d=[<path>]
 
 Options:
 
- -d=              Path to the directory to search for skipped tests
+ -d=<path>        Path to the directory to search for skipped tests
  -txt             Output the results to a plain text file
  -cli             Output the results to the terminal
- -o=<path>        Specify the directory for the output file
- -c               Create output in the same directory as the script
+ -o=<path>        Path to the directory for the text output
+ -c               Output the text results in the same directory as the script
  -h, --help       Display this help message
 ```
 
