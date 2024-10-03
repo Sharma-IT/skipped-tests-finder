@@ -19,7 +19,7 @@ Skipped Tests Finder is a command-line tool that scans your project or test suit
 - Identifies skipped tests for many different types of syntaxes, such as `it.skip(...)`, `test.skip(...)`, `xtest(...)`, `@unittest.skip("reason")`, `@pytest.mark.skip(reason="reason")`, `it "test name"` and much more
 - Displays the total number of skipped tests found
 - Outputs a list of skipped tests with their names, file paths, and line numbers
-- Supports outputting the results to a file (`skipped-tests.txt`) for easier integration with other tools or further processing
+- Supports outputting the results to a file (`skipped_tests.txt`) for easier integration with other tools or further processing
 
 ## Installation
 
@@ -64,21 +64,28 @@ cd skipped-tests-finder
 node skipped-tests-finder.js
 ```
 4. Upon execution, the script will request the path to your tests directory. You have the option to input the path after initiating the script or beforehand using the `-d` argument. For example, `node skipped-tests-finder.js -d=projects/project_name/cypress/e2e`.
-5. Following that, the script will inquire whether you wish to save the results to a text file. Respond with either "y" or "n" as appropriate, "y" will save the results to a text file (`skipped-tests.txt`) and "n" will print the results in your console. Alternatively, you can bypass this prompt by utilising the following arguments when executing the script: `-cli` or `-txt`. The `-cli` option will display the results directly in your console, while `-txt` will generate a plain text file named `skipped-tests.txt`.
-6. The script will proceed to scan your test directory and its subdirectories to identify skipped tests. Subsequently, it will print the results in the console or write them into the `skipped-tests.txt` file, depending on your choice.
+5. Following that, the script will inquire whether you wish to save the results to a text file. Respond with either "y" or "n" as appropriate, "y" will save the results to a text file (`skipped_tests.txt`) and "n" will print the results in your console. If you choose "y", you'll be prompted to enter the file path where you want the text file to be created. Leaving this blank will create the output in the same directory as the script.
+6. Alternatively, you can bypass this prompt by utilising the following arguments when executing the script:
+   - `-cli`: Display the results directly in your console
+   - `-txt`: Generate a plain text file named `skipped_tests.txt`
+   - `-o=<path>`: Specify the directory for the output file
+   - `-c`: Create output in the same directory as the script
+7. The script will proceed to scan your test directory and its subdirectories to identify skipped tests. Subsequently, it will print the results in the console or write them into the `skipped_tests.txt` file, depending on your choice.
 
 **Note:** you can also copy the script manually into your project directory and run the script from the project directory.
 
 ### Commands
 
 ```
-Usage: skipped-tests-finder [options] -d=[<path>]
+Usage: node skipped-tests-finder [options] -d=[<path>]
 
 Options:
 
  -d=              Path to the directory to search for skipped tests
  -txt             Output the results to a plain text file
  -cli             Output the results to the terminal
+ -o=<path>        Specify the directory for the output file
+ -c               Create output in the same directory as the script
  -h, --help       Display this help message
 ```
 
