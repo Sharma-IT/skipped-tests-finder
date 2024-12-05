@@ -1,0 +1,34 @@
+{
+    "name": "skipped-tests-finder",
+    "version": "1.1.0",
+    "description": "A command-line tool that scans your project or test suites and identifies any skipped tests",
+    "main": "skipped-tests-finder.js",
+    "bin": {
+      "skipped-tests-finder": "./skipped-tests-finder.js"
+    },
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+      "testing",
+      "tests",
+      "skipped-tests",
+      "test-finder",
+      "test-analyzer",
+      "development-tools"
+    ],
+    "author": "Shubham Sharma",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/Sharma-IT/skipped-tests-finder"
+    },
+    "bugs": {
+      "url": "https://github.com/Sharma-IT/skipped-tests-finder/issues"
+    },
+    "homepage": "https://github.com/Sharma-IT/skipped-tests-finder#readme",
+    "engines": {
+      "node": ">=10.0.0"
+    }
+  }
+  
