@@ -1,22 +1,23 @@
 #!/bin/bash
 
-# Get the current user's home directory
-HOME_DIR=$(eval echo ~$USER)
+# Make script executable
+chmod +x skipped-tests-finder.js
 
-# Check if the file already exists in the home directory
-if [ -f "$HOME_DIR/skipped-tests-finder.js" ]; then
-    echo "Error: skipped-tests-finder.js already exists in your home directory."
-    exit 1
+# Remove existing symbolic link if it exists
+if [ -L "/usr/local/bin/skipped-tests-finder" ] || [ -f "/usr/local/bin/skipped-tests-finder" ]; then
+    echo "Removing existing installation..."
+    sudo rm "/usr/local/bin/skipped-tests-finder"
 fi
 
-# Copy the script into the user's home directory
-cp skipped-tests-finder.js "$HOME_DIR/"
+# Create symbolic link in /usr/local/bin
+echo "Creating symbolic link in /usr/local/bin (requires sudo access)..."
+sudo ln -s "$(pwd)/skipped-tests-finder.js" /usr/local/bin/skipped-tests-finder
 
-# Check if the copy operation was successful
+# Check if the symbolic link was created successfully
 if [ $? -ne 0 ]; then
-    echo "Error: Failed to copy skipped-tests-finder.js to your home directory."
+    echo "Error: Failed to create symbolic link. Make sure you have sudo privileges."
     exit 1
 fi
 
-echo "skipped-tests-finder has been installed in $HOME_DIR (your home directory)"
-echo "To run skipped-tests-finder, go to your home directory (\"cd\"), and run the command \"node skipped-tests-finder.js\""
+echo "skipped-tests-finder has been installed globally"
+echo "You can now run 'skipped-tests-finder' from any directory"
