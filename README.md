@@ -27,6 +27,14 @@ Skipped Tests Finder is a command-line tool that scans your project or test suit
 
 - **skipped-tests-finder** requires **NodeJS 10** (or higher) to be installed
 
+### NPM Installation (Recommended)
+
+```sh
+npm install -g skipped-tests-finder
+```
+
+This will install the tool globally on your system, making it available from any directory.
+
 1. Clone this repository:
 
 ```sh
@@ -58,6 +66,32 @@ This will make the tool accessible from anywhere by running `skipped-tests-finde
 ```
 
 This will make the tool accessible from anywhere by running `skipped-tests-finder`. You may need to restart your terminal for the changes to take effect.
+
+## Uninstallation
+
+### NPM Uninstallation
+
+If you installed via npm:
+
+```sh
+npm uninstall -g skipped-tests-finder
+```
+
+### Manual Uninstallation
+
+#### For Linux/macOS
+
+```bash
+./uninstall.sh
+```
+
+#### For Windows
+
+Run PowerShell as Administrator and execute:
+
+```powershell
+.\uninstall.ps1
+```
 
 ## Usage
 
