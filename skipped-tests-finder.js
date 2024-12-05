@@ -1,9 +1,11 @@
+#!/usr/bin/env node
+
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
 const console = require('console');
 
-let testDir = null;
+let testsDir = null;
 let outputToFile = false;
 let skipPrompt = false;
 let outputDir = null;
@@ -33,7 +35,7 @@ const args = process.argv.slice(2);
 
 args.forEach((arg) => {
   if (arg.startsWith('-d=')) {
-    testDir = arg.substring(3);
+    testsDir = arg.substring(3);
   } else if (arg === '-txt') {
     outputToFile = true;
     skipPrompt = true;
@@ -45,16 +47,13 @@ args.forEach((arg) => {
   Options:
 
     -d=             Path to the directory to search for skipped tests
-    -txt            Print the results to a plain text file
+    -txt            Print the results to a plain text file in the same directory as the tests
     -cli            Print the results to the console
-    -o=<path>       Specify the directory for the output file
-    -c              Create output in the same directory as the script
+    -o=<path>       Override the output directory for the text file (optional)
     -h, --help      Display this help message\n`);
     process.exit(0);
   } else if (arg.startsWith('-o=')) {
     outputDir = arg.substring(3);
-  } else if (arg === '-c') {
-    outputDir = __dirname;
   }
 });
 
@@ -120,7 +119,7 @@ const findSkippedTests = (dirPath) => {
 /**
  * Prompts the user to enter the path to their tests directory, and stores the path if it is valid.
  *
- * This function sets the `testDir` variable to the user-provided path if it is valid, and exits the script if the path is invalid.
+ * This function sets the `testsDir` variable to the user-provided path if it is valid, and exits the script if the path is invalid.
  *
  * @returns {Promise<void>} - A promise that resolves when the user has provided a valid directory path.
  */
@@ -142,7 +141,7 @@ const promptForDirectory = () => {
       });
       const dirPath = answer.trim();
       fs.statSync(dirPath);
-      testDir = dirPath;
+      testsDir = dirPath;
     } catch (err) {
       if (err.code === 'ENOENT') {
         console.log(`The directory does not exist. Please enter a valid directory path.`);
@@ -191,17 +190,17 @@ const promptForOutputOption = () => {
     };
 
     const askForOutputPath = () => {
-      rl.question(`Enter the file path of where you want the text file to be created in (leave blank for script directory): `, (path) => {
+      rl.question(`Enter the file path of where you want the text file to be created in (leave blank for the same file path as the tests): `, (path) => {
         if (path.trim() === '') {
-          outputDir = __dirname;
+          outputDir = testsDir;
         } else {
           try {
             fs.accessSync(path.trim(), fs.constants.W_OK);
             outputDir = path.trim();
           } catch (err) {
             console.error(`Error: Unable to write to the specified directory. ${err.message}`);
-            console.log('Using the script directory instead.');
-            outputDir = __dirname;
+            console.log('Using the tests directory instead.');
+            outputDir = testsDir;
           }
         }
         resolve();
@@ -218,7 +217,7 @@ const promptForOutputOption = () => {
 /**
  * Finds and prints the names and locations of any skipped tests in the specified directory.
  *
- * If the test directory was not provided as a command line argument, the user will be prompted to enter it.
+ * If the tests directory was not provided as a command line argument, the user will be prompted to enter it.
  * If the user was not prompted whether to output the results to a file, they will be prompted to choose.
  *
  * The function will search the specified directory for any skipped tests and print their names and locations.
@@ -228,7 +227,7 @@ const promptForOutputOption = () => {
  * Otherwise, the skipped test information will be printed to the console.
  */
 const findAndPrintSkippedTests = async () => {
-  if (!testDir) {
+  if (!testsDir) {
     await promptForDirectory();
   }
 
@@ -236,7 +235,7 @@ const findAndPrintSkippedTests = async () => {
     await promptForOutputOption();
   }
 
-  const skippedTests = findSkippedTests(testDir);
+  const skippedTests = findSkippedTests(testsDir);
 
   if (skippedTests.length > 0) {
     let output = `\nTotal skipped tests: ${skippedTests.length}\n\nSkipped Tests:\n\n`;
@@ -244,9 +243,10 @@ const findAndPrintSkippedTests = async () => {
 
     if (outputToFile) {
       output = stripANSI(output);
+      // If outputDir is not explicitly set with -o, use the tests directory
       const outputFilePath = outputDir 
         ? path.join(outputDir, 'skipped_tests.txt')
-        : path.join(process.cwd(), 'skipped_tests.txt');
+        : path.join(testsDir, 'skipped_tests.txt');
       fs.writeFileSync(outputFilePath, output + testOutput);
       console.log(`Skipped tests output written to ${outputFilePath}`);
     } else {

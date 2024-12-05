@@ -39,45 +39,47 @@ git clone https://github.com/Sharma-IT/skipped-tests-finder.git
 cd skipped-tests-finder
 ```
 
-### For Linux
+### For Linux/macOS
 
-3. To install `skipped-tests-finder` on Linux-based Operating Systems (including macOS), run:
+3. To install `skipped-tests-finder` globally on Linux-based Operating Systems (including macOS), run:
 
 ```bash
 ./install.sh
 ```
 
+This will make the tool accessible from anywhere by running `skipped-tests-finder`.
+
 ### For Windows
 
-3. To install `skipped-tests-finder` on Windows Operating Systems, run:
+3. To install `skipped-tests-finder` globally on Windows, run PowerShell as Administrator and execute:
 
 ```powershell
 .\install.ps1
 ```
 
+This will make the tool accessible from anywhere by running `skipped-tests-finder`. You may need to restart your terminal for the changes to take effect.
+
 ## Usage
 
-1. Install `skipped-tests-finder`.
-2. Navigate to your home directory, using `cd` in your terminal (on either Linux or Windows).
-3. Run the `skipped-tests-finder` command:
+1. Install `skipped-tests-finder` using the instructions above.
+2. From any directory in your terminal, run:
 ```sh
-node skipped-tests-finder.js
+skipped-tests-finder
 ```
-4. Upon execution, the script will request the path to your tests directory. You have the option to input the path after initiating the script or beforehand using the `-d` argument. For example, `node skipped-tests-finder.js -d=projects/project_name/cypress/e2e`.
-5. Following that, the script will inquire whether you wish to save the results to a text file. Respond with either "y" or "n" as appropriate, "y" will save the results to a text file (`skipped_tests.txt`) and "n" will print the results in your console. If you choose "y", you'll be prompted to enter the file path where you want the text file to be created. Leaving this blank will create the output in the same directory as the script.
-6. Alternatively, you can bypass this prompt by utilising the following arguments when executing the script:
+3. Upon execution, the script will request the path to your tests directory. You have the option to input the path after initiating the script or beforehand using the `-d` argument. For example, `skipped-tests-finder -d=projects/project_name/cypress/e2e`.
+4. Following that, the script will inquire whether you wish to save the results to a text file. Respond with either "y" or "n" as appropriate, "y" will save the results to a text file (`skipped_tests.txt`) and "n" will print the results in your console. If you choose "y", you'll be prompted to enter the file path where you want the text file to be created. Leaving this blank will create the output in the same directory as the tests.
+5. Alternatively, you can bypass this prompt by utilising the following arguments when executing the script:
    - `-cli`: Display the results directly in your console
-   - `-txt`: Generate a plain text file named `skipped_tests.txt`
-   - `-o=<path>`: Specify the directory for the output file
-   - `-c`: Create output in the same directory as the script
-7. The script will proceed to scan your test directory and its subdirectories to identify skipped tests. Subsequently, it will print the results in the console or write them into the `skipped_tests.txt` file, depending on your choice.
+   - `-txt`: Generate a plain text file named `skipped_tests.txt` in the same directory as your tests
+   - `-o=<path>`: Override the output directory for the text file (optional)
+   - `-d=<path>`: Specify the directory to scan for skipped tests (e.g., `skipped-tests-finder -d=projects/project_name/cypress/e2e`)
 
-**Note:** you can also copy the script manually into your project directory and run the script from the project directory.
+6. The script will proceed to scan your test directory and its subdirectories to identify skipped tests. Subsequently, it will print the results in the console or write them into the `skipped_tests.txt` file, depending on your choice.
 
 ### Commands
 
 ```
-Usage: node skipped-tests-finder [options] -d=[<path>]
+Usage: skipped-tests-finder [options] -d=[<path>]
 
 Options:
 
@@ -85,14 +87,13 @@ Options:
  -txt             Output the results to a plain text file
  -cli             Output the results to the terminal
  -o=<path>        Path to the directory for the text output
- -c               Output the text results in the same directory as the script
  -h, --help       Display this help message
 ```
 
 ### Example Output
 
 ```
-my-name@my-computers-name my application % node skipped-tests-finder.js -d=.projects/project_1/cypress/e2e -cli
+my-name@my-computers-name my_application % skipped-tests-finder.js -d=.projects/project_1/cypress/e2e -cli
 
 Total skipped tests: 2
 
