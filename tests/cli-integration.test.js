@@ -21,8 +21,9 @@ describe('CLI Integration Tests', () => {
     test('should generate JSON output via CLI', async () => {
       const { stdout } = await execAsync(`node src/cli.js -d=tests/fixtures -f=json -o=${tempDir}`);
       
-      assert(stdout.includes('Results written to:'), 'Should show success message');
+      assert(stdout.includes('Results saved as:'), 'Should show success message');
       assert(stdout.includes('skipped_tests.json'), 'Should mention JSON file');
+      assert(stdout.includes('JSON FILE CREATED'), 'Should show JSON creation message');
       
       const jsonPath = path.join(tempDir, 'skipped_tests.json');
       assert(fs.existsSync(jsonPath), 'JSON file should exist');
@@ -36,8 +37,9 @@ describe('CLI Integration Tests', () => {
     test('should generate Markdown output via CLI', async () => {
       const { stdout } = await execAsync(`node src/cli.js -d=tests/fixtures -f=markdown -o=${tempDir}`);
       
-      assert(stdout.includes('Results written to:'), 'Should show success message');
+      assert(stdout.includes('Results saved as:'), 'Should show success message');
       assert(stdout.includes('skipped_tests.md'), 'Should mention Markdown file');
+      assert(stdout.includes('MARKDOWN REPORT CREATED'), 'Should show Markdown creation message');
       
       const mdPath = path.join(tempDir, 'skipped_tests.md');
       assert(fs.existsSync(mdPath), 'Markdown file should exist');
@@ -50,8 +52,9 @@ describe('CLI Integration Tests', () => {
     test('should generate text output via CLI (backward compatibility)', async () => {
       const { stdout } = await execAsync(`node src/cli.js -d=tests/fixtures -txt -o=${tempDir}`);
       
-      assert(stdout.includes('Results written to:'), 'Should show success message');
+      assert(stdout.includes('Results saved as:'), 'Should show success message');
       assert(stdout.includes('skipped_tests.txt'), 'Should mention text file');
+      assert(stdout.includes('TEXT FILE CREATED'), 'Should show text creation message');
       
       const txtPath = path.join(tempDir, 'skipped_tests.txt');
       assert(fs.existsSync(txtPath), 'Text file should exist');
