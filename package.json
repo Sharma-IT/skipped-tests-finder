@@ -1,6 +1,6 @@
 {
     "name": "skipped-tests-finder",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "description": "A command-line tool that scans your project or test suites and identifies any skipped tests",
     "main": "src/cli.js",
     "bin": {
