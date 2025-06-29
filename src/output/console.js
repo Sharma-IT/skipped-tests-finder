@@ -191,7 +191,7 @@ function displayResults(skippedTests) {
   
   console.log('\n' + colorize('💡 TIP:', colors.green + colors.bright));
   console.log(colorize('   Review and address these skipped tests before your next release.', colors.green));
-  console.log(colorize('   Use -txt flag to export results to a file for tracking.', colors.green));
+  console.log(colorize('   Use -f=text flag to export results to a file for tracking.', colors.green));
   
   console.log('\n' + createSeparator('═', 70, colors.cyan));
 }
@@ -211,10 +211,10 @@ function displayHelp() {
   
   const options = [
     { flag: '-d=<path>', desc: 'Path to the directory to search for skipped tests', required: true },
-    { flag: '-txt', desc: 'Output results to a plain text file in the same directory as tests', required: false },
-    { flag: '-cli', desc: 'Output results to the console (default behavior)', required: false },
     { flag: '-f=<format>, --format=<format>', desc: 'Output format: text, json, markdown (default: text)', required: false },
-    { flag: '-o=<path>', desc: 'Override the output directory for the text file (optional)', required: false },
+    { flag: '-cli', desc: 'Output results to the console (default behavior)', required: false },
+    { flag: '-o=<path>', desc: 'Override the output directory for files (optional)', required: false },
+    { flag: '-txt', desc: 'Legacy: same as -f=text (for backward compatibility)', required: false },
     { flag: '-h, --help', desc: 'Display this help message', required: false }
   ];
   
@@ -238,8 +238,8 @@ function displayHelp() {
   console.log(`   ${colorize('# Scan tests directory and output to console', colors.gray)}`);
   console.log(`   ${colorize('skipped-tests-finder', colors.cyan)} ${colorize('-d=./tests', colors.green)} ${colorize('-cli', colors.yellow)}`);
   console.log();
-  console.log(`   ${colorize('# Scan and save results to text file', colors.gray)}`);
-  console.log(`   ${colorize('skipped-tests-finder', colors.cyan)} ${colorize('-d=./src', colors.green)} ${colorize('-txt', colors.yellow)}`);
+  console.log(`   ${colorize('# Save results as text file', colors.gray)}`);
+  console.log(`   ${colorize('skipped-tests-finder', colors.cyan)} ${colorize('-d=./src', colors.green)} ${colorize('-f=text', colors.yellow)}`);
   console.log();
   console.log(`   ${colorize('# Save results as JSON', colors.gray)}`);
   console.log(`   ${colorize('skipped-tests-finder', colors.cyan)} ${colorize('-d=./tests', colors.green)} ${colorize('-f=json', colors.yellow)}`);
@@ -247,7 +247,7 @@ function displayHelp() {
   console.log(`   ${colorize('# Save results as Markdown with custom output directory', colors.gray)}`);
   console.log(`   ${colorize('skipped-tests-finder', colors.cyan)} ${colorize('-d=./tests', colors.green)} ${colorize('-f=markdown', colors.yellow)} ${colorize('-o=./reports', colors.yellow)}`);
   console.log();
-  console.log(`   ${colorize('# Scan with custom output directory (text format)', colors.gray)}`);
+  console.log(`   ${colorize('# Legacy format (backward compatibility)', colors.gray)}`);
   console.log(`   ${colorize('skipped-tests-finder', colors.cyan)} ${colorize('-d=./tests', colors.green)} ${colorize('-txt', colors.yellow)} ${colorize('-o=./reports', colors.yellow)}`);
   
   console.log('\n' + colorize('🔍 SUPPORTED LANGUAGES:', colors.blue + colors.bright));
