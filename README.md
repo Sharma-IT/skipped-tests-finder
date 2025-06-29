@@ -8,18 +8,43 @@
 
 <br>
 
-Skipped Tests Finder is a command-line tool that scans your project or test suites and identifies any skipped tests or test suites. It provides a convenient way to keep track of skipped tests and ensure that they are addressed before releasing your application. Skipped Tests Finder works for the majority of test frameworks, including but not limited to Playwright, Puppeteer, Cypress, Robot Framework, Selenium, Katalon Studio, Jest, Mocha, Jasmine, unittest, pytest, RSpec, MiniTest, PHPUnit, JUnit, NUnit, MSTest, Catch2 and GoogleTest.
+Skipped Tests Finder is a command-line tool that scans your project or test suites and identifies any skipped tests or test suites. It provides a convenient way to keep track of skipped tests and ensure that they are addressed before releasing your application. 
+
+**Supported Languages & Frameworks:**
+- **JavaScript/TypeScript**: Jest, Mocha, Jasmine, Cypress, Playwright, Puppeteer
+- **Python**: unittest, pytest, nose
+- **Ruby**: RSpec, MiniTest  
+- **Java**: JUnit 4/5, TestNG
+- **C#**: NUnit, MSTest, xUnit
+- **C++**: Google Test, Catch2
+- **Go**: Standard testing package
+- **PHP**: PHPUnit
+- **Rust**: Built-in test framework
+- **Swift**: XCTest
+- **Kotlin**: JUnit, Spek
+- **Scala**: ScalaTest
+- **Dart**: Built-in test framework
+- **Groovy**: Spock
+- **Perl**: Test::More
+- **Elixir**: ExUnit
+- **Clojure**: Built-in test framework
+- **Robot Framework**: Robot Framework
+
+And many more through generic comment patterns (SKIP, TODO, FIXME).
 
 **Note:** this tool appears to struggle with scanning very large codebases in their entirety. If you encounter the error message `The directory does not exist. Please enter a valid directory path.` after running the script to scan your entire codebase, please rerun the tool, this time targeting either your test directory or the `src` folder specifically. Additionally, it's advisable to run the tool separately on different directories to segregate results for distinct types of test suites within your project. For instance, you might run this script to identify Jest tests located in `./src` and Cypress tests in `./cypress/e2e` separately.
 
 
 ## Features
 
-- Recursively scans a directory and its subdirectories for test files (`.js`, `.ts`, `.jsx`, `.tsx`, `.coffee`, `.py`, `.rb`, `.php`, `.java`, `.cs`, `.go`, `.cpp` and `.groovy` files)
-- Identifies skipped tests for many different types of syntaxes, such as `it.skip(...)`, `test.skip(...)`, `xtest(...)`, `@unittest.skip("reason")`, `@pytest.mark.skip(reason="reason")`, `it "test name"` and much more
-- Displays the total number of skipped tests found
-- Outputs a list of skipped tests with their names, file paths, and line numbers
-- Supports outputting the results to a file (`skipped_tests.txt`) for easier integration with other tools or further processing
+- **Multi-language Support**: Scans test files in 15+ programming languages
+- **Comprehensive Framework Coverage**: Supports 50+ testing frameworks and patterns
+- **Recursive Scanning**: Recursively scans directories and subdirectories
+- **Flexible File Types**: Supports `.js`, `.ts`, `.py`, `.rb`, `.java`, `.cs`, `.go`, `.cpp`, `.rs`, `.swift`, `.kt`, `.php`, `.dart`, `.pl`, `.ex`, `.clj`, `.robot` and many more
+- **Rich Pattern Detection**: Identifies various skip syntaxes like `it.skip()`, `@unittest.skip()`, `@Ignore`, `#[ignore]`, `t.Skip()`, etc.
+- **Detailed Output**: Shows test names, file paths, and line numbers
+- **Multiple Output Formats**: Console output or file export (`skipped_tests.txt`)
+- **Comment Pattern Detection**: Finds TODO, FIXME, and SKIP comments in code
 
 ## Installation
 
@@ -52,7 +77,7 @@ cd skipped-tests-finder
 3. To install `skipped-tests-finder` globally on Linux-based Operating Systems (including macOS), run:
 
 ```bash
-./install.sh
+./scripts/install.sh
 ```
 
 This will make the tool accessible from anywhere by running `skipped-tests-finder`.
@@ -62,7 +87,7 @@ This will make the tool accessible from anywhere by running `skipped-tests-finde
 3. To install `skipped-tests-finder` globally on Windows, run PowerShell as Administrator and execute:
 
 ```powershell
-.\install.ps1
+.\scripts\install.ps1
 ```
 
 This will make the tool accessible from anywhere by running `skipped-tests-finder`. You may need to restart your terminal for the changes to take effect.
@@ -82,7 +107,7 @@ npm uninstall -g skipped-tests-finder
 #### For Linux/macOS
 
 ```bash
-./uninstall.sh
+./scripts/uninstall.sh
 ```
 
 #### For Windows
@@ -90,7 +115,7 @@ npm uninstall -g skipped-tests-finder
 Run PowerShell as Administrator and execute:
 
 ```powershell
-.\uninstall.ps1
+.\scripts\uninstall.ps1
 ```
 
 ## Usage
@@ -135,6 +160,60 @@ Skipped Tests:
 
 - test 1 (cypress/e2e/tests.spec.js:4)
 - test 2 (cypress/e2e/tests.spec.js:12)
+```
+
+## Project Structure
+
+The project has been organized into a modular structure for better maintainability:
+
+```
+skipped-tests-finder/
+├── src/
+│   ├── cli.js                    # Main CLI entry point
+│   ├── core/
+│   │   ├── scanner.js           # Core scanning logic
+│   │   ├── patterns.js          # Test framework patterns
+│   │   └── utils.js             # Utility functions
+│   └── output/
+│       ├── console.js           # Console output formatting
+│       └── file.js              # File output handling
+├── scripts/
+│   ├── install.sh               # Linux/macOS installation
+│   ├── install.ps1              # Windows installation
+│   ├── uninstall.sh             # Linux/macOS uninstallation
+│   └── uninstall.ps1            # Windows uninstallation
+├── tests/
+│   ├── fixtures/                # Test files for testing
+│   └── *.test.js                # Unit tests
+├── docs/
+│   ├── api.md                   # API documentation
+│   └── examples/                # Usage examples
+├── bin/
+│   └── skipped-tests-finder     # CLI executable
+└── package.json
+```
+
+## Development
+
+### Running from Source
+
+```bash
+# Clone the repository
+git clone https://github.com/Sharma-IT/skipped-tests-finder.git
+cd skipped-tests-finder
+
+# Run directly
+node src/cli.js -d=./tests
+
+# Or use npm script
+npm start -- -d=./tests
+```
+
+### Testing
+
+```bash
+# Run tests (when available)
+npm test
 ```
 
 ## Contributing
