@@ -29,6 +29,8 @@ class SkippedTestsFinder {
       if (arg.startsWith('-d=')) {
         this.testsDir = arg.substring(3);
       } else if (arg === '-txt') {
+        // Backward compatibility: treat -txt as -f=text
+        this.outputFormat = 'text';
         this.outputToFile = true;
         this.skipPrompt = true;
       } else if (arg === '-cli') {

@@ -43,7 +43,11 @@ And many more through generic comment patterns (SKIP, TODO, FIXME).
 - **Flexible File Types**: Supports `.js`, `.ts`, `.py`, `.rb`, `.java`, `.cs`, `.go`, `.cpp`, `.rs`, `.swift`, `.kt`, `.php`, `.dart`, `.pl`, `.ex`, `.clj`, `.robot` and many more
 - **Rich Pattern Detection**: Identifies various skip syntaxes like `it.skip()`, `@unittest.skip()`, `@Ignore`, `#[ignore]`, `t.Skip()`, etc.
 - **Detailed Output**: Shows test names, file paths, and line numbers
-- **Multiple Output Formats**: Console output or file export (`skipped_tests.txt`)
+- **Multiple Output Formats**: 
+  - **Console**: Rich, colorized terminal output with hierarchical display
+  - **Text**: Plain text file for simple reporting (`skipped_tests.txt`)
+  - **JSON**: Structured data format for integration with other tools (`skipped_tests.json`)
+  - **Markdown**: Formatted report with tables and code blocks (`skipped_tests.md`)
 - **Comment Pattern Detection**: Finds TODO, FIXME, and SKIP comments in code
 
 ## Installation
@@ -129,9 +133,12 @@ skipped-tests-finder
 4. Following that, the script will inquire whether you wish to save the results to a text file. Respond with either "y" or "n" as appropriate, "y" will save the results to a text file (`skipped_tests.txt`) and "n" will print the results in your console. If you choose "y", you'll be prompted to enter the file path where you want the text file to be created. Leaving this blank will create the output in the same directory as the tests.
 5. Alternatively, you can bypass this prompt by utilising the following arguments when executing the script:
    - `-cli`: Display the results directly in your console
-   - `-txt`: Generate a plain text file named `skipped_tests.txt` in the same directory as your tests
-   - `-o=<path>`: Override the output directory for the text file (optional)
+   - `-f=text`: Generate a plain text file named `skipped_tests.txt` in the same directory as your tests
+   - `-f=json`: Generate a JSON file named `skipped_tests.json` with structured test data
+   - `-f=markdown`: Generate a Markdown report named `skipped_tests.md` with formatted results
+   - `-o=<path>`: Override the output directory for the output file (optional)
    - `-d=<path>`: Specify the directory to scan for skipped tests (e.g., `skipped-tests-finder -d=projects/project_name/cypress/e2e`)
+   - `-txt`: Legacy format flag (same as `-f=text`) for backward compatibility
 
 6. The script will proceed to scan your test directory and its subdirectories to identify skipped tests. Subsequently, it will print the results in the console or write them into the `skipped_tests.txt` file, depending on your choice.
 
@@ -142,24 +149,134 @@ Usage: skipped-tests-finder [options] -d=[<path>]
 
 Options:
 
- -d=<path>        Path to the directory to search for skipped tests
- -txt             Output the results to a plain text file
- -cli             Output the results to the terminal
- -o=<path>        Path to the directory for the text output
- -h, --help       Display this help message
+ -d=<path>           Path to the directory to search for skipped tests
+ -f=<format>         Output format: text, json, markdown (default: text)
+ --format=<format>   Same as -f (alternative syntax)
+ -cli                Output the results to the terminal (default behavior)
+ -o=<path>           Path to the directory for file output
+ -txt                Legacy flag (same as -f=text) for backward compatibility
+ -h, --help          Display this help message
+```
+
+### Example Usage
+
+**Basic console output:**
+```bash
+skipped-tests-finder -d=./tests -cli
+```
+
+**Generate text file:**
+```bash
+skipped-tests-finder -d=./tests -f=text
+```
+
+**Generate JSON report:**
+```bash
+skipped-tests-finder -d=./tests -f=json
+```
+
+**Generate Markdown report:**
+```bash
+skipped-tests-finder -d=./tests -f=markdown
+```
+
+**Custom output directory:**
+```bash
+skipped-tests-finder -d=./tests -f=markdown -o=./reports
+```
+
+**Legacy format (backward compatibility):**
+```bash
+skipped-tests-finder -d=./tests -txt
 ```
 
 ### Example Output
 
+**Console Output:**
 ```
-my-name@my-computers-name my_application % skipped-tests-finder.js -d=.projects/project_1/cypress/e2e -cli
+══════════════════════════════════════════════════════════════════════
+  SKIPPED TESTS FINDER - SCAN RESULTS
+══════════════════════════════════════════════════════════════════════
 
-Total skipped tests: 2
+⚠️  FOUND SKIPPED TESTS
+   Total: 3 skipped tests
 
-Skipped Tests:
+📊 BREAKDOWN BY LANGUAGE:
+   • JavaScript: 2 tests
+   • Python: 1 test
 
-- test 1 (cypress/e2e/tests.spec.js:4)
-- test 2 (cypress/e2e/tests.spec.js:12)
+📋 DETAILED RESULTS:
+
+   JavaScript (2 tests)
+   ────────────────────
+   ├── should skip this test
+   │    📁 test.spec.js:10
+   └── another skipped test
+        📁 test.spec.js:25
+
+   Python (1 test)
+   ────────────────────
+   └── test with reason
+        📁 test_sample.py:15
+```
+
+**JSON Output (skipped_tests.json):**
+```json
+{
+  "totalSkippedTests": 3,
+  "filesWithSkippedTests": 2,
+  "generatedAt": "2025-06-30T10:30:00.000Z",
+  "summary": {
+    "test.spec.js": {
+      "filePath": "/path/to/test.spec.js",
+      "skippedTestsCount": 2,
+      "tests": [
+        {
+          "testName": "should skip this test",
+          "lineNumber": 10,
+          "line": "it.skip('should skip this test', () => {})",
+          "reason": null
+        }
+      ]
+    }
+  }
+}
+```
+
+**Markdown Output (skipped_tests.md):**
+```markdown
+# Skipped Tests Report
+
+**Generated:** 30/06/2025, 10:30:00 am
+
+## Summary
+
+- **Total Skipped Tests:** 3
+- **Files with Skipped Tests:** 2
+
+## Summary by File
+
+| File | Skipped Tests | Language |
+|------|---------------|----------|
+| test.spec.js | 2 | JavaScript |
+| test_sample.py | 1 | Python |
+
+## Detailed Results
+
+### test.spec.js
+
+**File:** `/path/to/test.spec.js`
+
+**Skipped Tests:** 2
+
+#### 1. should skip this test
+
+- **Line:** 10
+- **Code:**
+
+```javascript
+it.skip('should skip this test', () => {})
+```
 ```
 
 ## Project Structure
