@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Make script executable
-chmod +x skipped-tests-finder.js
+chmod +x bin/skipped-tests-finder
 
 # Remove existing symbolic link if it exists
 if [ -L "/usr/local/bin/skipped-tests-finder" ] || [ -f "/usr/local/bin/skipped-tests-finder" ]; then
@@ -11,7 +11,7 @@ fi
 
 # Create symbolic link in /usr/local/bin
 echo "Creating symbolic link in /usr/local/bin (requires sudo access)..."
-sudo ln -s "$(pwd)/skipped-tests-finder.js" /usr/local/bin/skipped-tests-finder
+sudo ln -s "$(pwd)/bin/skipped-tests-finder" /usr/local/bin/skipped-tests-finder
 
 # Check if the symbolic link was created successfully
 if [ $? -ne 0 ]; then

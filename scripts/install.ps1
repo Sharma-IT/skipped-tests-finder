@@ -11,10 +11,10 @@ if (-not (Test-Path -Path $USER_BIN)) {
 }
 
 # Add shebang line to the script if it doesn't exist
-$scriptContent = Get-Content "skipped-tests-finder.js" -Raw
+$scriptContent = Get-Content "bin\skipped-tests-finder" -Raw
 if (-not ($scriptContent -match "^#!")) {
     $scriptContent = "#!/usr/bin/env node`n" + $scriptContent
-    Set-Content "skipped-tests-finder.js" $scriptContent
+    Set-Content "bin\skipped-tests-finder" $scriptContent
 }
 
 # Remove existing installation if it exists
@@ -25,7 +25,7 @@ if (Test-Path -Path $targetPath) {
 }
 
 # Copy the script to the bin directory
-Copy-Item "skipped-tests-finder.js" -Destination $targetPath -Force
+Copy-Item "bin\skipped-tests-finder" -Destination $targetPath -Force
 
 # Add the bin directory to PATH if it's not already there
 $currentPath = [Environment]::GetEnvironmentVariable("Path", "User")
