@@ -152,12 +152,12 @@ const SKIP_PATTERNS = {
   
   // Generic patterns
   TEST_IGNORE: /Test\.(Ignore|Ignored)\(\)/g,
-  SKIP_COMMENT: /\/\/\s*SKIP:?\s*(.*)/g,
-  TODO_COMMENT: /\/\/\s*TODO:?\s*(.*)/g,
-  FIXME_COMMENT: /\/\/\s*FIXME:?\s*(.*)/g,
-  HASH_SKIP_COMMENT: /#\s*SKIP:?\s*(.*)/g,
-  HASH_TODO_COMMENT: /#\s*TODO:?\s*(.*)/g,
-  HASH_FIXME_COMMENT: /#\s*FIXME:?\s*(.*)/g
+  SKIP_COMMENT: /\/\/\s*SKIP:?\s*.*test.*|\/\/\s*.*test.*SKIP:?/gi,
+  TODO_COMMENT: /\/\/\s*TODO:?\s*.*test.*|\/\/\s*.*test.*TODO:?/gi,
+  FIXME_COMMENT: /\/\/\s*FIXME:?\s*.*test.*|\/\/\s*.*test.*FIXME:?/gi,
+  HASH_SKIP_COMMENT: /#\s*SKIP:?\s*.*test.*|#\s*.*test.*SKIP:?/gi,
+  HASH_TODO_COMMENT: /#\s*TODO:?\s*.*test.*|#\s*.*test.*TODO:?/gi,
+  HASH_FIXME_COMMENT: /#\s*FIXME:?\s*.*test.*|#\s*.*test.*FIXME:?/gi
 };
 
 /**
