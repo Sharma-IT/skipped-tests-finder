@@ -277,7 +277,6 @@ skipped-tests-finder -d=./tests -txt
 ```javascript
 it.skip('should skip this test', () => {})
 ```
-```
 
 ## Project Structure
 
@@ -329,7 +328,7 @@ npm start -- -d=./tests
 ### Testing
 
 ```bash
-# Run tests (when available)
+# Run tests
 npm test
 ```
 
